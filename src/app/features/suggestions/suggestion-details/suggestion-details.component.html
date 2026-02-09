@@ -1,0 +1,13 @@
+<div *ngIf="suggestion">
+  <h2>{{ suggestion.title }}</h2>
+  <p><strong>Description:</strong> {{ suggestion.description }}</p>
+  <p><strong>Category:</strong> {{ suggestion.category }}</p>
+  <p><strong>Date:</strong> {{ suggestion.date | date }}</p>
+  <p><strong>Status:</strong> {{ suggestion.status }}</p>
+  <p><strong>Likes:</strong> {{ suggestion.nbLikes }}</p>
+  <button (click)="goBack()">Back to List</button>
+</div>
+<div *ngIf="!suggestion">
+  <p>Suggestion not found.</p>
+  <button (click)="goBack()">Back to List</button>
+</div>

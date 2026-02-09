@@ -1,0 +1,9 @@
+<h2>Suggestions List</h2>
+<ul>
+  <li *ngFor="let suggestion of suggestions">
+    <h3>{{ suggestion.title }}</h3>
+    <p>{{ suggestion.description }}</p>
+    <button (click)="viewDetails(suggestion.id)">Details</button>
+  </li>
+</ul>
+<router-outlet></router-outlet>

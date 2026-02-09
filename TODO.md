@@ -1,0 +1,4 @@
+- [x] Update home.component.html with a welcome section and styled content inspired by list-suggestion layout
+- [x] Create home.component.css with adapted styles from list-suggestion.component.css
+- [x] Update notfound.component.html with a 404 message in a styled container
+- [ ] Create notfound.component.css with adapted styles

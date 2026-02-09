@@ -1,0 +1,79 @@
+<div class="list-container">
+  <div class="container">
+    <!-- Barre de recherche -->
+    <div class="search-section">
+      <h2>📋 Liste des Suggestions</h2>
+      <div class="search-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="searchText" 
+          placeholder="🔍 Rechercher par titre ou catégorie..."
+          class="search-input"
+        />
+      </div>
+      
+      <!-- Compteur de favoris -->
+      <div class="favorites-count" *ngIf="favorites.length > 0">
+        ⭐ Vous avez {{ favorites.length }} suggestion(s) favorite(s)
+      </div>
+    </div>
+
+    <!-- Affichage des suggestions -->
+    <div class="suggestions-grid">
+      <div 
+        class="suggestion-card" 
+        *ngFor="let suggestion of filteredSuggestions"
+        [class.favorite-card]="isFavorite(suggestion)"
+      >
+        <!-- En-tête de la carte -->
+        <div class="card-header">
+          <h3>{{ suggestion.title }}</h3>
+          <span class="badge" [ngClass]="getStatusClass(suggestion.status)">
+            {{ getStatusText(suggestion.status) }}
+          </span>
+        </div>
+
+        <!-- Corps de la carte -->
+        <div class="card-body">
+          <p class="description">{{ suggestion.description }}</p>
+          
+          <div class="card-meta">
+            <span class="category">📁 {{ suggestion.category }}</span>
+            <span class="date">📅 {{ suggestion.date | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="likes-section">
+            <span class="likes-count">❤️ {{ suggestion.nbLikes }} like(s)</span>
+          </div>
+        </div>
+
+        <!-- Boutons d'action (cachés si status = refusée) -->
+        <div class="card-actions" *ngIf="suggestion.status !== 'refusee'">
+          <button 
+            class="btn btn-like" 
+            (click)="incrementLikes(suggestion)"
+          >
+            👍 Like
+          </button>
+          <button 
+            class="btn btn-favorite" 
+            (click)="addToFavorites(suggestion)"
+            [disabled]="isFavorite(suggestion)"
+          >
+            {{ isFavorite(suggestion) ? '⭐ Déjà favori' : '⭐ Ajouter aux favoris' }}
+          </button>
+        </div>
+
+        <!-- Message pour les suggestions refusées -->
+        <div class="refused-message" *ngIf="suggestion.status === 'refusee'">
+          ❌ Cette suggestion a été refusée
+        </div>
+      </div>
+    </div>
+
+    <!-- Message si aucune suggestion trouvée -->
+    <div class="no-results" *ngIf="filteredSuggestions.length === 0">
+      <p>🔍 Aucune suggestion trouvée pour "{{ searchText }}"</p>
+    </div>
+  </div>
+</div>
