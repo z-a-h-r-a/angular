@@ -1,0 +1,57 @@
+<div class="favorites-container">
+  <div class="container">
+    <h2>⭐ Mes Favoris</h2>
+    
+    <!-- Message if no favorites -->
+    <div class="no-favorites" *ngIf="favorites.length === 0">
+      <p>Vous n'avez pas encore de favoris.</p>
+      <a routerLink="/listSuggestion" class="btn btn-primary">
+        Parcourir les suggestions
+      </a>
+    </div>
+
+    <!-- Display favorites -->
+    <div class="favorites-grid" *ngIf="favorites.length > 0">
+      <div class="suggestion-card" *ngFor="let suggestion of favorites">
+        <!-- En-tête de la carte -->
+        <div class="card-header">
+          <h3>{{ suggestion.title }}</h3>
+          <span class="badge" [ngClass]="getStatusClass(suggestion.status)">
+            {{ getStatusText(suggestion.status) }}
+          </span>
+        </div>
+
+        <!-- Corps de la carte -->
+        <div class="card-body">
+          <p class="description">{{ suggestion.description }}</p>
+          
+          <div class="card-meta">
+            <span class="category">📁 {{ suggestion.category }}</span>
+            <span class="date">📅 {{ suggestion.date | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="likes-section">
+            <span class="likes-count">❤️ {{ suggestion.nbLikes }} like(s)</span>
+          </div>
+        </div>
+
+        <!-- Bouton pour retirer des favoris -->
+        <div class="card-actions">
+          <button 
+            class="btn btn-remove-favorite" 
+            (click)="removeFromFavorites(suggestion)"
+          >
+            ❌ Retirer des favoris
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="back-section" *ngIf="favorites.length > 0">
+      <a routerLink="/listSuggestion" class="btn btn-secondary">
+        ← Retour aux suggestions
+      </a>
+    </div>
+  </div>
+</div>
