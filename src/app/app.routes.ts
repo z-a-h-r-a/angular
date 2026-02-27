@@ -5,9 +5,11 @@ import { ProfileComponent } from './features/users/profile/profile.component';
 
 export const routes: Routes = [
     {
-    path: '',
-    component: HomeComponent
-    }
+        path: '',
+        loadComponent: () =>
+            import('./core/home/home.component')
+            .then(m => m.HomeComponent)
+    },
     {
         path: 'home',
         loadComponent: () =>
@@ -31,6 +33,18 @@ export const routes: Routes = [
         loadComponent: () =>
             import('./core/favorites/favorites.component')
             .then(m => m.FavoritesComponent)
+    },
+    { 
+        path: 'suggestions/add', 
+        loadComponent: () =>
+            import('./features/suggestions/add-suggestion/add-suggestion.component')
+            .then(m => m.AddSuggestionComponent)
+    },
+    { 
+        path: 'suggestions/add/:id', 
+        loadComponent: () =>
+            import('./features/suggestions/add-suggestion/add-suggestion.component')
+            .then(m => m.AddSuggestionComponent)
     },
     { path: 'suggestions/:id', component: SuggestionDetailsComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },

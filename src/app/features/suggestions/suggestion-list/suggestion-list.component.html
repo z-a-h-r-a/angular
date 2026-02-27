@@ -1,9 +1,15 @@
 <h2>Suggestions List</h2>
+<button (click)="addSuggestion()">Add New Suggestion</button>
 <ul>
   <li *ngFor="let suggestion of suggestions">
     <h3>{{ suggestion.title }}</h3>
     <p>{{ suggestion.description }}</p>
+    <p>Category: {{ suggestion.category }}</p>
+    <p>Status: {{ suggestion.status }}</p>
+    <p>Likes: {{ suggestion.nbLikes }}</p>
     <button (click)="viewDetails(suggestion.id)">Details</button>
+    <button (click)="deleteSuggestion(suggestion.id)">Supprimer</button>
+    <button (click)="incrementLikes(suggestion.id)">Like</button>
   </li>
 </ul>
 <router-outlet></router-outlet>
