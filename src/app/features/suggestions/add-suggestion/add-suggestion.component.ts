@@ -52,6 +52,10 @@ export class AddSuggestionComponent implements OnInit {
   }
 
   private initForm(suggestion?: Suggestion): void {
+    const suggestionDate = suggestion?.date 
+      ? new Date(suggestion.date).toISOString().split('T')[0] 
+      : new Date().toISOString().split('T')[0];
+    
     this.suggestionForm = this.fb.group({
       title: [
         suggestion?.title || '',
@@ -73,7 +77,7 @@ export class AddSuggestionComponent implements OnInit {
         Validators.required
       ],
       date: [
-        suggestion?.date ? new Date(suggestion.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+        suggestionDate,
         Validators.required
       ],
       status: [
@@ -89,24 +93,33 @@ export class AddSuggestionComponent implements OnInit {
     }
 
     const formValue = this.suggestionForm.value;
+    const currentSuggestions = this.suggestionService.getSuggestionsListLocal();
     
-    const suggestion: Suggestion = {
-      id: this.isEditMode ? 
-        this.suggestionService.getSuggestionByIdLocal(+this.route.snapshot.paramMap.get('id')!)?.id || 0 :
-        Math.max(...this.suggestionService.getSuggestionsListLocal().map(s => s.id), 0) + 1,
-      title: formValue.title,
-      description: formValue.description,
-      category: formValue.category,
-      date: new Date(formValue.date),
-      status: formValue.status,
-      nbLikes: this.isEditMode ? 
-        this.suggestionService.getSuggestionByIdLocal(+this.route.snapshot.paramMap.get('id')!)?.nbLikes || 0 : 
-        0
-    };
-
+    let suggestion: Suggestion;
+    
     if (this.isEditMode) {
+      const id = +this.route.snapshot.paramMap.get('id')!;
+      const existingSuggestion = this.suggestionService.getSuggestionByIdLocal(id);
+      suggestion = {
+        id: id,
+        title: formValue.title,
+        description: formValue.description,
+        category: formValue.category,
+        date: new Date(formValue.date),
+        status: formValue.status,
+        nbLikes: existingSuggestion?.nbLikes || 0
+      };
       this.suggestionService.updateSuggestionLocal(suggestion.id, suggestion);
     } else {
+      suggestion = {
+        id: Math.max(...currentSuggestions.map(s => s.id), 0) + 1,
+        title: formValue.title,
+        description: formValue.description,
+        category: formValue.category,
+        date: new Date(formValue.date),
+        status: formValue.status,
+        nbLikes: 0
+      };
       this.suggestionService.addSuggestionLocal(suggestion);
     }
     

@@ -24,5 +24,34 @@
       "bio": "Développeuse web et amante des voyages.",
       "avatar": "https://via.placeholder.com/150"
     }
+  ],
+  "suggestions": [
+    {
+      "id": 1,
+      "title": "Améliorer la connexion WiFi",
+      "description": "Le WiFi dans les espaces de travail est souvent lent et instable. Nous proposons d'investir dans une infrastructure réseau plus robuste pour améliorer la productivité de tous les employés.",
+      "category": "Technologie et services numériques",
+      "date": "2024-01-15",
+      "status": "en_attente",
+      "nbLikes": 10
+    },
+    {
+      "id": 2,
+      "title": "Ajouter des Vegan options",
+      "description": "Il serait appréciée d'avoir plus d'options vegan dans la cafétéria. De plus en plus de collaborateurs adoptent un régime vegan et auraient besoin de choix adaptés.",
+      "category": "Restauration et cafétéria",
+      "date": "2024-02-20",
+      "status": "acceptee",
+      "nbLikes": 25
+    },
+    {
+      "id": 3,
+      "title": "Réparer les luminaires",
+      "description": "Plusieurs luminaires dans le hall d'entrée sont hors service depuis plusieurs semaines. Cela crée une ambiance sombre et peu accueillante pour les visiteurs.",
+      "category": "Infrastructure et batiments",
+      "date": "2024-03-10",
+      "status": "en_attente",
+      "nbLikes": 5
+    }
   ]
 }

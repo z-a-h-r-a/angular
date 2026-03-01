@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Router } from "@angular/router";
+import { Subscription } from "rxjs";
 import { Suggestion } from "../../../models/suggestion";
 import { SuggestionService } from "../../../core/services/suggestion.service";
 
@@ -11,8 +12,9 @@ import { SuggestionService } from "../../../core/services/suggestion.service";
   templateUrl: "./suggestion-list.component.html",
   styleUrl: "./suggestion-list.component.css"
 })
-export class SuggestionListComponent implements OnInit {
+export class SuggestionListComponent implements OnInit, OnDestroy {
   suggestions: Suggestion[] = [];
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private router: Router,
@@ -20,7 +22,13 @@ export class SuggestionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.suggestions = this.suggestionService.getSuggestionsListLocal();
+    this.subscription = this.suggestionService.suggestions$.subscribe(suggestions => {
+      this.suggestions = suggestions;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   viewDetails(id: number): void {
@@ -33,13 +41,10 @@ export class SuggestionListComponent implements OnInit {
 
   deleteSuggestion(id: number): void {
     this.suggestionService.deleteSuggestionLocal(id);
-    this.suggestions = this.suggestionService.getSuggestionsListLocal();
-    this.router.navigate(["/suggestions"]);
   }
 
   incrementLikes(id: number): void {
     this.suggestionService.updateLikesLocal(id);
-    this.suggestions = this.suggestionService.getSuggestionsListLocal();
   }
 
   getStatusLabel(status: string): string {

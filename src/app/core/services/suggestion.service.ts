@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Suggestion } from '../../models/suggestion';
 
 @Injectable({
@@ -8,15 +8,30 @@ import { Suggestion } from '../../models/suggestion';
 })
 export class SuggestionService {
   
-  suggestionUrl = 'http://localhost:3000/suggestions';
+  private suggestionUrl = 'http://localhost:3000/suggestions';
+  private bdUrl = '/bd.json';
+  
+  // BehaviorSubject to manage suggestions state
+  private suggestionsSubject = new BehaviorSubject<Suggestion[]>([]);
+  suggestions$ = this.suggestionsSubject.asObservable();
 
-  // Mock data for fallback (when backend is not available)
-  private suggestionList: Suggestion[] = [
-    { id: 1, title: 'Suggestion 1', description: 'Description 1', category: 'Category 1', date: new Date(), status: 'en_attente', nbLikes: 10 },
-    { id: 2, title: 'Suggestion 2', description: 'Description 2', category: 'Category 2', date: new Date(), status: 'acceptee', nbLikes: 20 },
-  ];
+  constructor(private http: HttpClient) {
+    this.loadSuggestionsFromBd();
+  }
 
-  constructor(private http: HttpClient) { }
+  // Load suggestions from bd.json
+  private loadSuggestionsFromBd(): void {
+    this.http.get<any>(this.bdUrl).subscribe(data => {
+      if (data && data.suggestions) {
+        // Convert date strings to Date objects
+        const suggestions = data.suggestions.map((s: any) => ({
+          ...s,
+          date: new Date(s.date)
+        }));
+        this.suggestionsSubject.next(suggestions);
+      }
+    });
+  }
 
   // Returns the list of suggestions from HTTP
   getSuggestionsList(): Observable<Suggestion[]> {
@@ -45,43 +60,51 @@ export class SuggestionService {
 
   // Update likes for a suggestion via HTTP
   updateLikes(id: number): Observable<Suggestion> {
-    const suggestion = this.suggestionList.find(s => s.id === id);
-    if (suggestion) {
-      suggestion.nbLikes++;
-    }
-    return this.http.patch<Suggestion>(`${this.suggestionUrl}/${id}`, { nbLikes: suggestion?.nbLikes });
+    return this.http.patch<Suggestion>(`${this.suggestionUrl}/${id}`, { nbLikes: id });
   }
 
-  // Fallback methods using local data (for when backend is not available)
+  // Get suggestions from BehaviorSubject (from bd.json)
   getSuggestionsListLocal(): Suggestion[] {
-    return this.suggestionList;
+    return this.suggestionsSubject.getValue();
   }
 
   getSuggestionByIdLocal(id: number): Suggestion | undefined {
-    return this.suggestionList.find(s => s.id === id);
+    return this.suggestionsSubject.getValue().find(s => s.id === id);
   }
 
   addSuggestionLocal(suggestion: Suggestion): void {
-    const newId = Math.max(...this.suggestionList.map(s => s.id), 0) + 1;
+    const currentSuggestions = this.suggestionsSubject.getValue();
+    const newId = Math.max(...currentSuggestions.map(s => s.id), 0) + 1;
     suggestion.id = newId;
-    this.suggestionList.push(suggestion);
+    this.suggestionsSubject.next([...currentSuggestions, suggestion]);
   }
 
   updateSuggestionLocal(id: number, updatedSuggestion: Suggestion): void {
-    const index = this.suggestionList.findIndex(s => s.id === id);
+    const currentSuggestions = this.suggestionsSubject.getValue();
+    const index = currentSuggestions.findIndex(s => s.id === id);
     if (index !== -1) {
-      this.suggestionList[index] = { ...updatedSuggestion, id };
+      const updatedSuggestions = [...currentSuggestions];
+      updatedSuggestions[index] = { ...updatedSuggestion, id };
+      this.suggestionsSubject.next(updatedSuggestions);
     }
   }
 
   deleteSuggestionLocal(id: number): void {
-    this.suggestionList = this.suggestionList.filter(s => s.id !== id);
+    const currentSuggestions = this.suggestionsSubject.getValue();
+    const filteredSuggestions = currentSuggestions.filter(s => s.id !== id);
+    this.suggestionsSubject.next(filteredSuggestions);
   }
 
   updateLikesLocal(id: number): void {
-    const suggestion = this.suggestionList.find(s => s.id === id);
-    if (suggestion) {
-      suggestion.nbLikes++;
+    const currentSuggestions = this.suggestionsSubject.getValue();
+    const index = currentSuggestions.findIndex(s => s.id === id);
+    if (index !== -1) {
+      const updatedSuggestions = [...currentSuggestions];
+      updatedSuggestions[index] = {
+        ...updatedSuggestions[index],
+        nbLikes: updatedSuggestions[index].nbLikes + 1
+      };
+      this.suggestionsSubject.next(updatedSuggestions);
     }
   }
 }
