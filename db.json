@@ -1,0 +1,31 @@
+{
+  "suggestions": [
+    {
+      "id": 1,
+      "title": "Amelioration du WiFi",
+      "description": "Le WiFi dans les espaces de travail est tres lent et instable. Nous proposons de mettre a niveau l'infrastructure reseau pour garantir une connexion rapide et fiable.",
+      "category": "Technologie et services numériques",
+      "date": "2024-01-15",
+      "status": "en_attente",
+      "nbLikes": 5
+    },
+    {
+      "id": 2,
+      "title": "Ajout d options vegantiennes",
+      "description": "Nous souhaiterions que la cafeteria propose des options vegantiennes pour les employes qui suivent un regime alimentaire sans produits animaux.",
+      "category": "Restauration et cafétéria",
+      "date": "2024-01-20",
+      "status": "acceptee",
+      "nbLikes": 12
+    },
+    {
+      "id": 3,
+      "title": "Reparation de l eclairage",
+      "description": "L'eclairage dans le couloir du deuxieme etage ne fonctionne plus correctement. Il fait tres sombre et cela represente un risque pour la securite.",
+      "category": "Infrastructure et batiments",
+      "date": "2024-02-01",
+      "status": "en_attente",
+      "nbLikes": 3
+    }
+  ]
+}

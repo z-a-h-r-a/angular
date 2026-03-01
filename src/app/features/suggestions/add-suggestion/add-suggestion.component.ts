@@ -15,6 +15,7 @@ import { SuggestionService } from '../../../core/services/suggestion.service';
 export class AddSuggestionComponent implements OnInit {
   suggestionForm!: FormGroup;
   isEditMode = false;
+  currentId: number = 0;
   
   categories: string[] = [
     'Infrastructure et batiments',
@@ -40,15 +41,32 @@ export class AddSuggestionComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
-      const existingSuggestion = this.suggestionService.getSuggestionByIdLocal(+id);
-      if (existingSuggestion) {
-        this.initForm(existingSuggestion);
-      } else {
-        this.initForm();
-      }
+      this.currentId = +id;
+      this.loadExistingSuggestion(this.currentId);
     } else {
       this.initForm();
     }
+  }
+
+  /**
+   * Load existing suggestion for editing using HTTP GET
+   */
+  private loadExistingSuggestion(id: number): void {
+    this.suggestionService.getSuggestionById(id).subscribe({
+      next: (data) => {
+        this.initForm(data);
+      },
+      error: (err) => {
+        console.error('Error loading suggestion:', err);
+        // Fallback to local data
+        const localSuggestion = this.suggestionService.getSuggestionByIdLocal(id);
+        if (localSuggestion) {
+          this.initForm(localSuggestion);
+        } else {
+          this.initForm();
+        }
+      }
+    });
   }
 
   private initForm(suggestion?: Suggestion): void {
@@ -93,37 +111,62 @@ export class AddSuggestionComponent implements OnInit {
     }
 
     const formValue = this.suggestionForm.value;
-    const currentSuggestions = this.suggestionService.getSuggestionsListLocal();
     
-    let suggestion: Suggestion;
-    
+    const suggestion: Suggestion = {
+      id: this.isEditMode ? this.currentId : 0,
+      title: formValue.title,
+      description: formValue.description,
+      category: formValue.category,
+      date: new Date(formValue.date),
+      status: formValue.status,
+      nbLikes: 0
+    };
+
     if (this.isEditMode) {
-      const id = +this.route.snapshot.paramMap.get('id')!;
-      const existingSuggestion = this.suggestionService.getSuggestionByIdLocal(id);
-      suggestion = {
-        id: id,
-        title: formValue.title,
-        description: formValue.description,
-        category: formValue.category,
-        date: new Date(formValue.date),
-        status: formValue.status,
-        nbLikes: existingSuggestion?.nbLikes || 0
-      };
-      this.suggestionService.updateSuggestionLocal(suggestion.id, suggestion);
+      this.updateSuggestion(suggestion);
     } else {
-      suggestion = {
-        id: Math.max(...currentSuggestions.map(s => s.id), 0) + 1,
-        title: formValue.title,
-        description: formValue.description,
-        category: formValue.category,
-        date: new Date(formValue.date),
-        status: formValue.status,
-        nbLikes: 0
-      };
-      this.suggestionService.addSuggestionLocal(suggestion);
+      this.addNewSuggestion(suggestion);
     }
-    
-    this.router.navigate(['/suggestions']);
+  }
+
+  /**
+   * Add a new suggestion using HTTP POST
+   */
+  private addNewSuggestion(suggestion: Suggestion): void {
+    this.suggestionService.addSuggestion(suggestion).subscribe({
+      next: (newSuggestion) => {
+        console.log('Suggestion ajoutée avec succès:', newSuggestion);
+        this.router.navigate(['/suggestions']);
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'ajout:', err);
+        // Fallback to local add
+        this.suggestionService.addSuggestionLocal(suggestion);
+        this.router.navigate(['/suggestions']);
+      }
+    });
+  }
+
+  /**
+   * Update an existing suggestion using HTTP PUT
+   */
+  private updateSuggestion(suggestion: Suggestion): void {
+    // Get existing nbLikes
+    const existingSuggestion = this.suggestionService.getSuggestionByIdLocal(this.currentId);
+    suggestion.nbLikes = existingSuggestion?.nbLikes || 0;
+
+    this.suggestionService.updateSuggestion(this.currentId, suggestion).subscribe({
+      next: () => {
+        console.log('Suggestion mise à jour avec succès');
+        this.router.navigate(['/suggestions']);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour:', err);
+        // Fallback to local update
+        this.suggestionService.updateSuggestionLocal(this.currentId, suggestion);
+        this.router.navigate(['/suggestions']);
+      }
+    });
   }
 
   goBack(): void {

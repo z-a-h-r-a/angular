@@ -13,6 +13,8 @@ import { SuggestionService } from "../../../core/services/suggestion.service";
 })
 export class SuggestionDetailsComponent implements OnInit {
   suggestion: Suggestion | undefined;
+  loading = true;
+  error = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -22,7 +24,27 @@ export class SuggestionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get("id")!;
-    this.suggestion = this.suggestionService.getSuggestionByIdLocal(id);
+    this.loadSuggestion(id);
+  }
+
+  /**
+   * Load suggestion details from the server using HTTP GET
+   */
+  loadSuggestion(id: number): void {
+    this.loading = true;
+    this.suggestionService.getSuggestionById(id).subscribe({
+      next: (data) => {
+        this.suggestion = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading suggestion:', err);
+        this.error = 'Erreur lors du chargement de la suggestion';
+        // Fallback to local data
+        this.suggestion = this.suggestionService.getSuggestionByIdLocal(id);
+        this.loading = false;
+      }
+    });
   }
 
   goBack(): void {
@@ -33,5 +55,17 @@ export class SuggestionDetailsComponent implements OnInit {
     if (this.suggestion) {
       this.router.navigate(["/suggestions/add", this.suggestion.id]);
     }
+  }
+
+  /**
+   * Get status label in French
+   */
+  getStatusLabel(status: string): string {
+    const statusLabels: { [key: string]: string } = {
+      'en_attente': 'En attente',
+      'acceptee': 'Acceptée',
+      'refusee': 'Refusée'
+    };
+    return statusLabels[status] || status;
   }
 }
