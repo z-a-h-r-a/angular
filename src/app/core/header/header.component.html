@@ -9,8 +9,16 @@
 
     <!-- Right side -->
     <nav class="nav-links">
-      <a routerLink="/home" routerLinkActive="active">Home</a>
-      <a routerLink="/listSuggestion" routerLinkActive="active">Suggestions</a>
+      <a routerLink="/home" routerLinkActive="active">Home </a>
+      <a routerLink="/suggestions" routerLinkActive="active"> Suggestions </a>
+      
+      <!-- Auth buttons -->
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/users/profile" routerLinkActive="active">👤 Profil</a>
+        <button class="btn btn-outline-danger" (click)="signOut()">🚪 Déconnexion</button>
+      } @else {
+        <a routerLink="/auth/sign-in" routerLinkActive="active" class="btn btn-primary"> Connexion</a>
+      }
     </nav>
   </div>
 </header>

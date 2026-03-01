@@ -1,15 +1,49 @@
-<h2>Suggestions List</h2>
-<button (click)="addSuggestion()">Add New Suggestion</button>
-<ul>
-  <li *ngFor="let suggestion of suggestions">
-    <h3>{{ suggestion.title }}</h3>
-    <p>{{ suggestion.description }}</p>
-    <p>Category: {{ suggestion.category }}</p>
-    <p>Status: {{ suggestion.status }}</p>
-    <p>Likes: {{ suggestion.nbLikes }}</p>
-    <button (click)="viewDetails(suggestion.id)">Details</button>
-    <button (click)="deleteSuggestion(suggestion.id)">Supprimer</button>
-    <button (click)="incrementLikes(suggestion.id)">Like</button>
-  </li>
-</ul>
-<router-outlet></router-outlet>
+<div class="suggestions-container">
+  <div class="header">
+    <h2>Suggestions List</h2>
+    <button (click)="addSuggestion()" class="add-btn">
+      <span>+</span> Add Suggestion
+    </button>
+  </div>
+
+  <div class="suggestions-grid" *ngIf="suggestions.length > 0; else noSuggestions">
+    <div class="suggestion-card" *ngFor="let suggestion of suggestions">
+      <div class="card-header">
+        <h3>{{ suggestion.title }}</h3>
+        <span class="status-badge" [class]="suggestion.status">
+          {{ getStatusLabel(suggestion.status) }}
+        </span>
+      </div>
+      
+      <div class="card-body">
+        <p class="description">{{ suggestion.description }}</p>
+        
+        <div class="meta-info">
+          <span class="category">
+            <i class="icon">📁</i> {{ suggestion.category }}
+          </span>
+          <span class="date">
+            <i class="icon">📅</i> {{ suggestion.date | date:'dd/MM/yyyy' }}
+          </span>
+        </div>
+        
+        <div class="likes">
+          <span class="like-count">❤️ {{ suggestion.nbLikes }}</span>
+        </div>
+      </div>
+      
+      <div class="card-actions">
+        <button (click)="viewDetails(suggestion.id)" class="details-btn">Details</button>
+        <button (click)="incrementLikes(suggestion.id)" class="like-btn">Like</button>
+        <button (click)="deleteSuggestion(suggestion.id)" class="delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noSuggestions>
+    <div class="empty-state">
+      <p>No suggestions available yet.</p>
+      <button (click)="addSuggestion()" class="add-btn">Add the first suggestion</button>
+    </div>
+  </ng-template>
+</div>

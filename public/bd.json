@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "johndoe",
+      "password": "password123",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "gender": "male",
+      "dateOfBirth": "1990-01-15",
+      "bio": "Passionné par les nouvelles technologies.",
+      "avatar": "https://via.placeholder.com/150"
+    },
+    {
+      "id": 2,
+      "username": "janedoe",
+      "password": "password456",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "email": "jane.doe@example.com",
+      "gender": "female",
+      "dateOfBirth": "1992-05-20",
+      "bio": "Développeuse web et amante des voyages.",
+      "avatar": "https://via.placeholder.com/150"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <h2>Créer un compte</h2>
+    <p class="subtitle">Rejoignez notre plateforme de gestion des suggestions</p>
+
+    @if (errorMessage) {
+      <div class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (successMessage) {
+      <div class="alert alert-success">
+        {{ successMessage }}
+      </div>
+    }
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Nom d'utilisateur *</label>
+          <input 
+            type="text" 
+            id="username" 
+            [(ngModel)]="username" 
+            name="username" 
+            required
+            placeholder="Entrez votre nom d'utilisateur"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Prénom *</label>
+          <input 
+            type="text" 
+            id="firstName" 
+            [(ngModel)]="firstName" 
+            name="firstName" 
+            required
+            placeholder="Entrez votre prénom"
+          >
+        </div>
+        <div class="form-group">
+          <label for="lastName">Nom *</label>
+          <input 
+            type="text" 
+            id="lastName" 
+            [(ngModel)]="lastName" 
+            name="lastName" 
+            required
+            placeholder="Entrez votre nom"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="email" 
+          name="email" 
+          required
+          placeholder="Entrez votre email"
+        >
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Mot de passe *</label>
+          <input 
+            type="password" 
+            id="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            required
+            minlength="6"
+            placeholder="Entrez votre mot de passe"
+          >
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmer le mot de passe *</label>
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            [(ngModel)]="confirmPassword" 
+            name="confirmPassword" 
+            required
+            placeholder="Confirmez votre mot de passe"
+          >
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="gender">Genre</label>
+          <select 
+            id="gender" 
+            [(ngModel)]="gender" 
+            name="gender"
+          >
+            <option value="">Sélectionner</option>
+            <option value="male">Homme</option>
+            <option value="female">Femme</option>
+            <option value="other">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dateOfBirth">Date de naissance</label>
+          <input 
+            type="date" 
+            id="dateOfBirth" 
+            [(ngModel)]="dateOfBirth" 
+            name="dateOfBirth"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        <textarea 
+          id="bio" 
+          [(ngModel)]="bio" 
+          name="bio"
+          rows="3"
+          placeholder="Parlez-nous de vous..."
+        ></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary" [disabled]="isLoading">
+        @if (isLoading) {
+          <span>Création en cours...</span>
+        } @else {
+          <span>Créer mon compte</span>
+        }
+      </button>
+    </form>
+
+    <div class="form-footer">
+      <p>Déjà inscrit? <a routerLink="/auth/sign-in">Se connecter</a></p>
+    </div>
+  </div>
+</div>

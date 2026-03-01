@@ -1,0 +1,49 @@
+<div class="sign-in-container">
+  <div class="sign-in-card">
+    <h2>Connexion</h2>
+    <p class="subtitle">Connectez-vous pour accéder à votre compte</p>
+    
+    <form (ngSubmit)="onSubmit()" #signInForm="ngForm">
+      <div class="form-group">
+        <label for="username">Nom d'utilisateur</label>
+        <input 
+          type="text" 
+          id="username" 
+          [(ngModel)]="username" 
+          name="username"
+          placeholder="Entrez votre nom d'utilisateur"
+          required
+        >
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe</label>
+        <input 
+          type="password" 
+          id="password" 
+          [(ngModel)]="password" 
+          name="password"
+          placeholder="Entrez votre mot de passe"
+          required
+        >
+      </div>
+      
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+      
+      <button type="submit" class="btn-sign-in" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="isLoading">Chargement...</span>
+      </button>
+    </form>
+    
+    <div class="links">
+      <p>Pas encore de compte? <a routerLink="/auth/sign-up">S'inscrire</a></p>
+    </div>
+    
+    <div class="back-link">
+      <a routerLink="/home">← Retour à l'accueil</a>
+    </div>
+  </div>
+</div>

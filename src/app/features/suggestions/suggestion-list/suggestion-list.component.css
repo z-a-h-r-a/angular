@@ -1,0 +1,226 @@
+.suggestions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h2 {
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.add-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.add-btn span {
+  font-size: 20px;
+}
+
+.suggestions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.suggestion-card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.suggestion-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.en_attente {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.status-badge.acceptee {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-badge.refusee {
+  background-color: #dc3545;
+  color: white;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.meta-info span {
+  font-size: 13px;
+  color: #777;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.meta-info .icon {
+  font-size: 14px;
+}
+
+.likes {
+  display: flex;
+  align-items: center;
+}
+
+.like-count {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e74c3c;
+}
+
+.card-actions {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-actions button {
+  flex: 1;
+  min-width: 80px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.details-btn {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.details-btn:hover {
+  background-color: #138496;
+}
+
+.like-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.like-btn:hover {
+  background-color: #c0392b;
+}
+
+.delete-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #5a6268;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.empty-state p {
+  font-size: 18px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .suggestions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .card-actions {
+    flex-direction: column;
+  }
+  
+  .card-actions button {
+    width: 100%;
+  }
+}

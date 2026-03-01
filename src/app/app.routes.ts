@@ -17,6 +17,18 @@ export const routes: Routes = [
             .then(m => m.HomeComponent)
     },
     {
+        path: 'auth/sign-in',
+        loadComponent: () =>
+            import('./features/auth/sign-in/sign-in.component')
+            .then(m => m.SignInComponent)
+    },
+    {
+        path: 'auth/sign-up',
+        loadComponent: () =>
+            import('./features/auth/sign-up/sign-up.component')
+            .then(m => m.SignUpComponent)
+    },
+    {
         path: 'users/profile',
         loadComponent: () =>
             import('./features/users/profile/profile.component')
