@@ -1,21 +1,21 @@
 <div class="form-container">
-  <h2>{{ isEditMode ? 'Update Suggestion' : 'Add New Suggestion' }}</h2>
+  <h2>{{ isEditMode ? 'Modifier la suggestion' : 'Ajouter une nouvelle suggestion' }}</h2>
   
   <form [formGroup]="suggestionForm" (ngSubmit)="onSubmit()">
     <!-- Title Field -->
     <div class="form-group">
-      <label for="title">Title <span class="required">*</span></label>
+      <label for="title">Titre <span class="required">*</span></label>
       <input 
         type="text" 
         id="title" 
         formControlName="title" 
-        placeholder="Enter title (min 5 characters, start with uppercase)"
+        placeholder="Entrez le titre (min 5 caractères, commencer par une majuscule)"
         [class.error]="f['title'].invalid && f['title'].touched"
       >
       <div class="error-message" *ngIf="f['title'].invalid && f['title'].touched">
-        <small *ngIf="f['title'].errors?.['required']">Title is required.</small>
-        <small *ngIf="f['title'].errors?.['minlength']">Title must be at least 5 characters long.</small>
-        <small *ngIf="f['title'].errors?.['pattern']">Title must start with uppercase and contain only letters.</small>
+        <small *ngIf="f['title'].errors?.['required']">Le titre est obligatoire.</small>
+        <small *ngIf="f['title'].errors?.['minlength']">Le titre doit contenir au moins 5 caractères.</small>
+        <small *ngIf="f['title'].errors?.['pattern']">Le titre doit commencer par une majuscule et contenir uniquement des lettres.</small>
       </div>
     </div>
 
@@ -25,32 +25,32 @@
       <textarea 
         id="description" 
         formControlName="description" 
-        placeholder="Enter description (min 30 characters)"
+        placeholder="Entrez la description (min 30 caractères)"
         rows="5"
         [class.error]="f['description'].invalid && f['description'].touched"
       ></textarea>
       <div class="error-message" *ngIf="f['description'].invalid && f['description'].touched">
-        <small *ngIf="f['description'].errors?.['required']">Description is required.</small>
-        <small *ngIf="f['description'].errors?.['minlength']">Description must be at least 30 characters long.</small>
+        <small *ngIf="f['description'].errors?.['required']">La description est obligatoire.</small>
+        <small *ngIf="f['description'].errors?.['minlength']">La description doit contenir au moins 30 caractères.</small>
       </div>
       <small class="char-count" *ngIf="f['description'].value">
-        {{ f['description'].value.length }} / 30 characters minimum
+        {{ f['description'].value.length }} / 30 caractères minimum
       </small>
     </div>
 
     <!-- Category Field (Dropdown) -->
     <div class="form-group">
-      <label for="category">Category <span class="required">*</span></label>
+      <label for="category">Catégorie <span class="required">*</span></label>
       <select 
         id="category" 
         formControlName="category"
         [class.error]="f['category'].invalid && f['category'].touched"
       >
-        <option value="" disabled>Select a category</option>
+        <option value="" disabled>Sélectionnez une catégorie</option>
         <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
       </select>
       <div class="error-message" *ngIf="f['category'].invalid && f['category'].touched">
-        <small *ngIf="f['category'].errors?.['required']">Category is required.</small>
+        <small *ngIf="f['category'].errors?.['required']">La catégorie est obligatoire.</small>
       </div>
     </div>
 
@@ -68,7 +68,7 @@
 
     <!-- Status Field (Read-only) -->
     <div class="form-group">
-      <label for="status">Status <span class="required">*</span></label>
+      <label for="status">Statut <span class="required">*</span></label>
       <select 
         id="status" 
         formControlName="status"

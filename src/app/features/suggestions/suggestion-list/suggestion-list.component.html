@@ -1,8 +1,8 @@
 <div class="suggestions-container">
   <div class="header">
-    <h2>Suggestions List</h2>
+    <h2>Liste des Suggestions</h2>
     <button (click)="addSuggestion()" class="add-btn">
-      <span>+</span> Add Suggestion
+      <span>+</span> Ajouter une suggestion
     </button>
   </div>
 
@@ -33,17 +33,17 @@
       </div>
       
       <div class="card-actions">
-        <button (click)="viewDetails(suggestion.id)" class="details-btn">Details</button>
-        <button (click)="incrementLikes(suggestion.id)" class="like-btn">Like</button>
-        <button (click)="deleteSuggestion(suggestion.id)" class="delete-btn">Delete</button>
+        <button (click)="viewDetails(suggestion.id)" class="details-btn">Détails</button>
+        <button (click)="incrementLikes(suggestion.id)" class="like-btn">J'aime</button>
+        <button (click)="deleteSuggestion(suggestion.id)" class="delete-btn">Supprimer</button>
       </div>
     </div>
   </div>
 
   <ng-template #noSuggestions>
     <div class="empty-state">
-      <p>No suggestions available yet.</p>
-      <button (click)="addSuggestion()" class="add-btn">Add the first suggestion</button>
+      <p>Aucune suggestion disponible.</p>
+      <button (click)="addSuggestion()" class="add-btn">Ajouter la première suggestion</button>
     </div>
   </ng-template>
 </div>
